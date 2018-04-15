@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.aagah.mobapps.image2text.ImageActivity">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="379dp"
+        android:layout_width="match_parent"
         android:layout_height="466dp"
-        android:layout_marginBottom="45dp"
+        android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_report_image" />
-</RelativeLayout>
+        app:srcCompat="@android:drawable/ic_menu_report_image" android:contentDescription="@string/btnrotateleft" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnrotateleft"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/btnrotateright"
+            app:srcCompat="@android:drawable/ic_menu_rotate" />
+
+        <ImageButton
+            android:id="@+id/btnrotateright"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/btncrop"
+            app:srcCompat="@android:drawable/ic_menu_rotate" />
+
+        <ImageButton
+            android:id="@+id/btncrop"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/btncrop"
+            app:srcCompat="@android:drawable/ic_menu_crop" />
+    </LinearLayout>
+
+</LinearLayout>

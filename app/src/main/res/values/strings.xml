@@ -2,5 +2,11 @@
     <string name="app_name">Image2Text</string>
     <string name="take_picture">Take picture</string>
     <string name="button">Button</string>
-    <string name="todo">TODO</string>
+    <string name="todo">dont know</string>
+    <string name="btn_takepicture">take picture</string>
+    <string name="btn_takepicture2">btn_takepicture</string>
+    <string name="btnrotateleft">left rotating button</string>
+    <string name="btnrotateright">btnrotateright</string>
+    <string name="btncrop">btncrop</string>
+    <string name="btnflash">btnflash</string>
 </resources>
