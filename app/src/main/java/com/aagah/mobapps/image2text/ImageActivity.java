@@ -104,7 +104,11 @@ public class ImageActivity extends AppCompatActivity {
         btnrotateright.setClickable(true);
         btnrotateleft.setClickable(true);
     }
+    /*
 
+
+
+     */
     private void disableButton() {
         if(rotationChanged)
         {

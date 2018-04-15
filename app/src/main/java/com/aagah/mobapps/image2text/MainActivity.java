@@ -1,5 +1,7 @@
 package com.aagah.mobapps.image2text;
-
+/*
+Lets see if the changes are updated or not
+ */
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
