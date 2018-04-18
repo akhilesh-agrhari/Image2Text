@@ -4,15 +4,22 @@ package com.aagah.mobapps.image2text;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.support.annotation.Px;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.File;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class ImageActivity extends AppCompatActivity {
     ImageView imageView ;
@@ -21,9 +28,9 @@ public class ImageActivity extends AppCompatActivity {
     Matrix matrix;
     Bitmap drawableImage;
     float fromdegree = 0,todegree=0;
-    boolean rotationChanged=false;
-    //File file = null;
-
+    boolean rotationChanged=false,isHoritzontalOver=false;
+    @Px int left=0,top=50,right=0,bottom=50;
+    FrameLayout.LayoutParams lp1,lp2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,11 @@ public class ImageActivity extends AppCompatActivity {
         btnrotateleft = findViewById(R.id.btnrotateleft);
         btnrotateright = findViewById(R.id.btnrotateright);
         btncrop = findViewById(R.id.btncrop);
+        lp1 = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        lp2 = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        lp1.setMargins(0, 135, 0, 135);
+        lp2.setMargins(0,0,0,0);
+
 
 
         file = new File(image_path);
@@ -58,12 +70,13 @@ public class ImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 rotationChanged = true;
-                if(todegree==-360)todegree=0;
+                if(todegree==-360){todegree=fromdegree=0;}
                 todegree=todegree-90;
+
+                if(isHoritzontalOver)isHoritzontalOver=false;
+                else isHoritzontalOver=true;
                 rotate(fromdegree,todegree);
                 fromdegree=todegree;
-
-
                 /*matrix = new Matrix();
                     matrix.postRotate(-90);
                     drawableImage = Bitmap.createBitmap(drawableImage,0,0,drawableImage.getWidth(),drawableImage.getHeight(),matrix,true);
@@ -75,8 +88,12 @@ public class ImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 rotationChanged = true;
-                if (todegree==360)todegree=0;
+                if (todegree==360){todegree=fromdegree=0;}
                 todegree=todegree+90;
+
+
+               if(isHoritzontalOver)isHoritzontalOver=false;
+                else isHoritzontalOver=true;
                 rotate(fromdegree,todegree);
                 fromdegree=todegree;
                /* matrix = new Matrix();
@@ -112,22 +129,32 @@ public class ImageActivity extends AppCompatActivity {
     private void disableButton() {
         if(rotationChanged)
         {
+            rotationChanged = false;
             matrix = new Matrix();
-            matrix.postRotate(todegree);
+           // matrix.postRotate(todegree);
+            matrix.setRotate(imageView.getRotation());
+
             drawableImage = Bitmap.createBitmap(drawableImage,0,0,drawableImage.getWidth(),drawableImage.getHeight(),matrix,true);
             imageView.setImageBitmap(drawableImage);
+            Toast.makeText(ImageActivity.this,"inside Disable button",Toast.LENGTH_SHORT).show();
         }
         btnrotateright.setClickable(false);
         btnrotateleft.setClickable(false);
     }
 
     private void rotate(float fromdegree,float todegree) {
-        final RotateAnimation rotateAnim = new RotateAnimation(fromdegree, todegree,
-                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 
-        rotateAnim.setDuration(1000);
-        rotateAnim.setFillAfter(true);
-        imageView.startAnimation(rotateAnim);
+            final RotateAnimation rotateAnim = new RotateAnimation(fromdegree, todegree,
+                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            rotateAnim.setDuration(0);
+            rotateAnim.setFillAfter(true);
+           if (isHoritzontalOver)
+           {
+               imageView.setLayoutParams(lp1);
+           }
+           else
+               imageView.setLayoutParams(lp2);
+
+            imageView.startAnimation(rotateAnim);
     }
 }

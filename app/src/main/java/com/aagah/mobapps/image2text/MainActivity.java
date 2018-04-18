@@ -6,7 +6,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
+
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -21,14 +21,14 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 
 import android.media.Image;
 import android.media.ImageReader;
-import java.net.URI;
+
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.provider.MediaStore;
+
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -54,7 +54,7 @@ import java.util.Date;
 import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "AndroidCameraApi";
+    private static final String TAG = "MainActivity : ";
     private ImageButton takePictureButton;
     private TextureView textureView;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -112,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             Uri photoUri = data.getData();
-            File file2 = new File(getPath(photoUri));
+            String compressimagepath = CompressImage.compressImage(photoUri,this);
+            File file2 = new File(compressimagepath);
             if (!file2.exists()) Log.e(TAG, "please choose an image");
             else {
                 Log.e(TAG,"inside onActivityResult");
@@ -124,21 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-    public String getPath(Uri uri)
-    {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (cursor == null) return null;
-        int column_index =             cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String s=cursor.getString(column_index);
-        cursor.close();
-        return s;
-    }
-
-
-
-
 
 
     TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
@@ -381,6 +367,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e(TAG,"inside gotoImageActivity");
         Intent ImageActiviyIntent = new Intent(this,ImageActivity.class);
         String filepath = f.getAbsolutePath();
+        filepath = CompressImage.compressImage(filepath,this);
         ImageActiviyIntent.putExtra("image_path",filepath);
         Log.e(TAG, "extras has been put");
         startActivity(ImageActiviyIntent);

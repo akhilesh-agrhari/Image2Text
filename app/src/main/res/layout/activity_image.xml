@@ -7,16 +7,21 @@
     android:orientation="vertical"
     tools:context="com.aagah.mobapps.image2text.ImageActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="466dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_report_image" android:contentDescription="@string/btnrotateleft" />
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            app:srcCompat="@android:drawable/ic_menu_report_image" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+
             android:contentDescription="@string/btnrotateright"
             app:srcCompat="@android:drawable/ic_menu_rotate" />
 
