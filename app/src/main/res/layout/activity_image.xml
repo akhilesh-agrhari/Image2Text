@@ -12,7 +12,7 @@
         android:layout_height="466dp"
         android:layout_weight="1">
 
-        <ImageView
+        <it.sephiroth.android.library.imagezoom.ImageViewTouch
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -54,6 +54,13 @@
             android:layout_weight="1"
             android:contentDescription="@string/btncrop"
             app:srcCompat="@android:drawable/ic_menu_crop" />
+
+        <ImageButton
+            android:id="@+id/nextClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_send" />
     </LinearLayout>
 
 </LinearLayout>

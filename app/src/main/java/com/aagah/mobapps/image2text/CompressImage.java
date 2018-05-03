@@ -286,8 +286,3 @@ public class CompressImage {
     }
 
 }
-/*
-final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
-            ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
-                @Override
- */

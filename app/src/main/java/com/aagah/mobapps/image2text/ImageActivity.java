@@ -1,9 +1,12 @@
 package com.aagah.mobapps.image2text;
 
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Px;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,12 +22,16 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
+import it.sephiroth.android.library.imagezoom.graphics.IBitmapDrawable;
+
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class ImageActivity extends AppCompatActivity {
-    ImageView imageView ;
+    ImageViewTouch imageView ;
     private File file = null;
-    ImageButton btnrotateleft,btnrotateright,btncrop;
+    ImageButton btnrotateleft,btnrotateright,btncrop,nextClick;
     Matrix matrix;
     Bitmap drawableImage;
     float fromdegree = 0,todegree=0;
@@ -32,17 +39,19 @@ public class ImageActivity extends AppCompatActivity {
     @Px int left=0,top=50,right=0,bottom=50;
     FrameLayout.LayoutParams lp1,lp2;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("msg","indsie ImageActivity");
         setContentView(R.layout.activity_image);
-        imageView = findViewById(R.id.imageView);
+        imageView =(ImageViewTouch) findViewById(R.id.imageView);
         Bundle extras = getIntent().getExtras();
         String image_path = extras.getString("image_path");
         btnrotateleft = findViewById(R.id.btnrotateleft);
         btnrotateright = findViewById(R.id.btnrotateright);
         btncrop = findViewById(R.id.btncrop);
+        nextClick = findViewById(R.id.nextClick);
         lp1 = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         lp2 = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         lp1.setMargins(0, 135, 0, 135);
@@ -64,6 +73,36 @@ public class ImageActivity extends AppCompatActivity {
         else{
             Log.e("msg","file does not exists");
         }
+
+        imageView.setSingleTapListener(
+                new ImageViewTouch.OnImageViewTouchSingleTapListener() {
+
+                    @Override
+                    public void onSingleTapConfirmed() {
+                        Log.d("ImageActivity : ", "onSingleTapConfirmed");
+                    }
+                }
+        );
+
+        imageView.setDoubleTapListener(
+                new ImageViewTouch.OnImageViewTouchDoubleTapListener() {
+
+                    @Override
+                    public void onDoubleTap() {
+                        Log.d("ImageActivity", "onDoubleTap");
+                    }
+                }
+        );
+
+        imageView.setOnDrawableChangedListener(
+                new ImageViewTouchBase.OnDrawableChangeListener() {
+
+                    @Override
+                    public void onDrawableChanged(Drawable drawable) {
+                        Log.i("ImageActivity", "onBitmapChanged: " + drawable);
+                    }
+                }
+        );
 
 
         btnrotateleft.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +152,16 @@ public class ImageActivity extends AppCompatActivity {
             }
         });
 
+        nextClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                disableButton();
+                Image2Text image2Text = new Image2Text(drawableImage,getApplicationContext());
+                String string[] = image2Text.getText();
+                startNextActivity(string);
+            }
+        });
+
 
 
     }
@@ -121,12 +170,9 @@ public class ImageActivity extends AppCompatActivity {
         btnrotateright.setClickable(true);
         btnrotateleft.setClickable(true);
     }
-    /*
 
-
-
-     */
     private void disableButton() {
+        Log.e("disableButton : ","top");
         if(rotationChanged)
         {
             rotationChanged = false;
@@ -140,6 +186,7 @@ public class ImageActivity extends AppCompatActivity {
         }
         btnrotateright.setClickable(false);
         btnrotateleft.setClickable(false);
+        Log.e("disableButton : ","end");
     }
 
     private void rotate(float fromdegree,float todegree) {
@@ -156,5 +203,13 @@ public class ImageActivity extends AppCompatActivity {
                imageView.setLayoutParams(lp2);
 
             imageView.startAnimation(rotateAnim);
+    }
+
+    public void startNextActivity(String string[])
+    {
+        Log.e("startNextActivity -","optionActivity");
+        Intent intent = new Intent(this,OptionActivity.class);
+        intent.putExtra("strings", string);
+        startActivity(intent);
     }
 }
